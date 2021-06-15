@@ -73,6 +73,7 @@ def main():
 		timespan = sys.argv[2]
 	else:
 		ch = input('Proceed to display all events? (y/n) ')
+		timespan = "all"
 		if (ch != 'y'):
 			exit()
 
