@@ -28,6 +28,10 @@ def print_help():
 
 
 def get_event_time(event: dict):
+    # first clean the dictionary
+    for attr in event_time:
+        event_time[attr] = 0
+    # get values
     full_date = event[0]
     indexer = 0
     for ch in full_date:
@@ -98,13 +102,16 @@ def main():
             # read event parameters till the event end
             while True:
                 cuch = fp.read(1)
-                if cuch == ';':
+                pos = fp.tell()
+                tch = fp.read(1)
+                if cuch == ';' and tch == ';':
                     event[event_attr] = data.strip()
                     get_event_time(event)
                     print_permit = decide_print(timespan)
                     if print_permit:
                         print_output(event)
                     break
+                fp.seek(pos)
                 if cuch == '/':
                     if event_attr > 4:
                         break
