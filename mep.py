@@ -22,12 +22,25 @@ event_time = {
     2: 0  # day
 }
 
+date_time = {
+    0: 0,  # year
+    1: 0,  # month
+    2: 0  # day
+}
 
 def print_help():
-    print('Usage: mep [FILE] [TIMESPAN]')
+    print('Usage: mep [FILE] [TIME SPAN]')
+    print('\tEnter \'mep help\' to print this menu')
+    print('\t[FILE] - path to a file')
+    print('\t[TIME SPAN] - options: ')
+    print('\t\tall - all events')
+    print('\t\ttoday - all events for today')
+    print('\t\ttomorrow - all events for tomorrow')
+    print('\t\tdate [YYYY-MM-DD] - all events for a day')
 
 
-def get_event_time(event: dict):
+
+def time_to_dic(event: dict):
     # first clean the dictionary
     for attr in event_time:
         event_time[attr] = 0
@@ -45,16 +58,36 @@ def get_event_time(event: dict):
         event_time[indexer] += int(ch)
 
 
+def date_to_dic(certain_date):
+    indexer = 0
+    for ch in certain_date:
+        # print(ch)
+        if ch == '-':
+            indexer += 1
+            if indexer > 2:
+                break
+            continue
+        date_time[indexer] *= 10
+        date_time[indexer] += int(ch)
+
+
+
 def decide_print(timespan):
-    ct = datetime.datetime.now()  # ct stands for current time
     print_permit = False
+    if timespan == "date":
+        if date_time[0] == event_time[0] and date_time[1] == event_time[1] and date_time[2] == event_time[2]:
+            print_permit = True
+            return print_permit
+    ct = datetime.datetime.now()  # ct stands for current time
     if timespan == "all":
         print_permit = True
-        return print_permit
     if timespan == "today":
         if ct.year == event_time[0] and ct.month == event_time[1] and ct.day == event_time[2]:
             print_permit = True
-        return print_permit
+    if timespan == "tomorrow":
+        if ct.year == event_time[0] and ct.month == event_time[1] and ct.day+1 == event_time[2]:
+            print_permit = True
+    return print_permit
 
 
 def print_output(event):
@@ -65,14 +98,20 @@ def print_output(event):
 
 def main():
     # Read command-line args
+    ## help
     if len(sys.argv) < 2:
         print_help()
         exit()
+    if sys.argv[1] == "help":
+        print_help()
+        exit()
+    ## filename
     try:
         filename = sys.argv[1]
     except IndexError:
         print('Enter a file name!')
         exit()
+    ## timespan
     if len(sys.argv) > 2:
         timespan = sys.argv[2]
     else:
@@ -80,7 +119,14 @@ def main():
         timespan = "all"
         if ch != 'y':
             exit()
-
+    ### date
+    if timespan == "date":
+        try:
+            certain_date = sys.argv[3]
+        except IndexError:
+            print("Argument missing for date!")
+            exit()
+        date_to_dic(certain_date)
     # Open the file
     try:
         fp = open(filename, 'r')
@@ -106,7 +152,7 @@ def main():
                 tch = fp.read(1)
                 if cuch == ';' and tch == ';':
                     event[event_attr] = data.strip()
-                    get_event_time(event)
+                    time_to_dic(event)
                     print_permit = decide_print(timespan)
                     if print_permit:
                         print_output(event)
