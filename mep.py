@@ -1,5 +1,9 @@
 # TO DO
 ## - redo TIME SPAN to be more customizable
+##    - that will mean deleting ct and getting and implemanting date_time at all circumstances as the ultimate variable for setting the desired date
+##    - the goal is that a user can customize exactly his desired date
+##    - might not eventually do it as a person that knows shell scripting doesn't really need these
+##    - another option is implementing this extra functionality in a shell script, which would be easier as far as I'm concerned.
 ## - month option
 ## - year option
 ##
