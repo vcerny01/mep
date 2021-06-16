@@ -1,3 +1,8 @@
+# TO DO
+## - redo TIME SPAN to be more customizable
+## - month option
+## - year option
+##
 #
 # Name: mep - markdown events with python
 # Author: Vít Černý
@@ -28,6 +33,8 @@ date_time = {
     2: 0  # day
 }
 
+week_number =  int(datetime.datetime.now().strftime("%V"))
+
 def print_help():
     print('Usage: mep [FILE] [TIME SPAN]')
     print('\tEnter \'mep help\' to print this menu')
@@ -36,7 +43,8 @@ def print_help():
     print('\t\tall - all events')
     print('\t\ttoday - all events for today')
     print('\t\ttomorrow - all events for tomorrow')
-    print('\t\tweek - all events for a week')
+    print('\t\tweek [+-NUMBER] (optional, works only within current year) - all events for a certain week')
+    print('\t\tmonth [+-NUMBER] (optional, works only within current year) - all events for a certain month')
     print('\t\tdate [YYYY-MM-DD] - all events for a day')
 
 
@@ -89,7 +97,7 @@ def decide_print(timespan):
         if ct.year == event_time[0] and ct.month == event_time[1] and ct.day+1 == event_time[2]:
             print_permit = True
     if timespan == "week":
-        if ct.strftime("%V") == datetime.date(event_time[0], event_time[1], event_time[2]).strftime("%V"):
+        if week_number == int(datetime.date(event_time[0], event_time[1], event_time[2]).strftime("%V")):
             print_permit = True
     return print_permit
 
@@ -131,6 +139,20 @@ def main():
             print("Argument missing for date!")
             exit()
         date_to_dic(certain_date)
+    ### week
+    if timespan == "week" and len(sys.argv) > 3:
+        global week_number
+        add_to_week = 0
+        for char in sys.argv[3]:
+            add_to_week *= 10
+            try:
+                if sys.argv[3][0] == '-':
+                    add_to_week -= int(char)
+                else:
+                    add_to_week += int(char)
+            except ValueError:
+                continue
+        week_number += add_to_week
     # Open the file
     try:
         fp = open(filename, 'r')
