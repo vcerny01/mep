@@ -36,6 +36,7 @@ def print_help():
     print('\t\tall - all events')
     print('\t\ttoday - all events for today')
     print('\t\ttomorrow - all events for tomorrow')
+    print('\t\tweek - all events for a week')
     print('\t\tdate [YYYY-MM-DD] - all events for a day')
 
 
@@ -86,6 +87,9 @@ def decide_print(timespan):
             print_permit = True
     if timespan == "tomorrow":
         if ct.year == event_time[0] and ct.month == event_time[1] and ct.day+1 == event_time[2]:
+            print_permit = True
+    if timespan == "week":
+        if ct.strftime("%V") == datetime.date(event_time[0], event_time[1], event_time[2]).strftime("%V"):
             print_permit = True
     return print_permit
 
