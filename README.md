@@ -97,6 +97,6 @@ event: Meeting with John Doe (3 Abbey Road) at 12:00
 
 TO DO
 
-## installation
+## Installation
 
 TO DO
