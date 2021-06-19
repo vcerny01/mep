@@ -34,7 +34,7 @@ Whitespace is significant both between event parameters and outside the event ex
 4. Place (optional) - a place that has something to do with your event, no special format required
 5. Additional information (optional) - Some additional information for the event, e.g., a short note or a link to an online meeting
 
-you can write: `;; 2021-6-25 / Meeting with John Doe`
+You can write `;; 2021-6-25 / 12:00 / Meeting with John Doe ;;` and omit other parameters. You can also write: `;; 2021-6-25 / / Meeting with John Doe / / Bring the papers. ;;`
 
 ## `mep`
 
@@ -42,17 +42,15 @@ you can write: `;; 2021-6-25 / Meeting with John Doe`
 
 example:
 
-`mep file.md week +1`
+`mep file.md week +1` - prints all events in the next week.
 
-prints all events in the next week.
+From `mep`'s `help`:
 
-from `mep`'s `help`:
-
-``` text
+```text
 Usage: mep [FILE] [TIMESPAN]
         Enter 'mep help' to print this menu
         [FILE] - path to a file
-        [TIMESPAN] - options: 
+        [TIMESPAN] - options:
                 all - all events
                 day [+-NUMBER] (optional) - all events for a day
                 week [+-NUMBER] (optional) - all events for a week
@@ -61,31 +59,30 @@ Usage: mep [FILE] [TIMESPAN]
                 date [YYYY-MM-DD] - all events for a certain day, input by date
 ```
 
-`[+-NUMBER]` is a shift relative to current day/week/month/year, can be both positive and relative. Doesn't need to be specified, defaults to 0 (current day/week/month/year)
+`[+-NUMBER]` is a shift relative to current day/week/month/year, can be both positive and relative. Doesn't need to be specified, defaults to 0. (current day/week/month/year)
 
 Just test it out with a few events.
 
 example:
 
-these are the contents a markdown file named `test.md`:
+These are contents a markdown file named `test.md`:
 
-``` markdown
+```markdown
 # Events
 
 ## Meetings
 
 Yet another meeting with John Doe.
 ;; 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;
-
 ```
 
-this is a command for mep I used to get this event:
+This is a command I used to get this event:
 
 `mep test.md date 2021-6-25`
 
 This is the output I got:
 
-``` text
+```text
 On Friday, 6/25/2021:
 event: Meeting with John Doe (3 Abbey Road) at 12:00
         Bring the papers
