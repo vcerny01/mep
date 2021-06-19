@@ -1,5 +1,7 @@
 # mep - markdown events with python
 
+Not fully developed, yet!
+
 ## Introduction
 
 I organize a big part of my life in markdown. One thing I've been missing was a way to plan events in plain text. So I've created a special syntax for events, compatible with markdown, and `mep`, which is a basic parser for such events.
