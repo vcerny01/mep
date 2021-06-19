@@ -111,7 +111,7 @@ def print_output(certain_event):
         day_used = False
     if day_used is False:
         print(
-            "\n",
+            "\nOn",
             day.strftime("%A") + ",",
             (str(event_time[1]) + "/" + str(event_time[2]) + "/" + str(event_time[0]))
             + ":",
