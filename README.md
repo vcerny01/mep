@@ -34,7 +34,7 @@ Whitespace is significant both between event parameters and outside the event ex
 
 ### Parameters:
 
-0. Type (optional) - a type specifier, currently supported are `e` for events, `r` for reminders, `d` for deadlines. Put them anywhere inside the expression (I recommend to put them at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
+0. Type (optional) - a type specifier, currently supported are `e` for events, `r` for reminders, `d` for deadlines. Put it anywhere inside the expression (I recommend to put it at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
 1. Date (required) - a date must be in `YYYY-MM-DD` format
 2. Time (optional) - a time in a day, e.g., `16:30`, no special format required as it doesn't affect sorting, in fact, you can write whatever you want, e.g., `4 p.m.` or `12:00 - 16:00`, still I'd recommend to be consistent
 3. Event name (well, optional, but don't be weird) - name of the event, no special format required
