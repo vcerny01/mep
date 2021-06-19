@@ -1,6 +1,7 @@
 # mep - markdown events with python
 
 Not fully developed, yet!
+
 #### Table of Contents
 
 TO DO
@@ -13,7 +14,7 @@ I organize a big part of my life in markdown. One thing I've been missing was a 
 
 example:
 
-`;; 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;`
+`;; %e% 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;`
 
 Every event starts and ends with two semicolons (`;;`). Event parameters are separated by a slash (`/`).
 
@@ -22,7 +23,7 @@ Events can be inserted anywhere in a text file
 Whitespace is significant both between event parameters and outside the event expression. For example, you can write:
 
 ```markdown
-;;
+;; %e%
 2021-6-25 / 12:00 /
     Meeting with John Doe /
     3 Abbey Road /
@@ -33,13 +34,14 @@ Whitespace is significant both between event parameters and outside the event ex
 
 ### Parameters:
 
+0. Type (optional) - a type specifier, currently supported are `e` for events, `r` for reminders, `d` for deadlines. Put them anywhere inside the expression (I recommend to put them at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
 1. Date (required) - a date must be in `YYYY-MM-DD` format
 2. Time (optional) - a time in a day, e.g., `16:30`, no special format required as it doesn't affect sorting, in fact, you can write whatever you want, e.g., `4 p.m.` or `12:00 - 16:00`, still I'd recommend to be consistent
 3. Event name (well, optional, but don't be weird) - name of the event, no special format required
 4. Place (optional) - a place that has something to do with your event, no special format required
 5. Additional information (optional) - Some additional information for the event, e.g., a short note or a link to an online meeting
 
-You can write `;; 2021-6-25 / 12:00 / Meeting with John Doe ;;` and omit other parameters. You can also write: `;; 2021-6-25 / / Meeting with John Doe / / Bring the papers. ;;`
+You can write `;; %e% 2021-6-25 / 12:00 / Meeting with John Doe ;;` and omit other parameters. You can also write: `;; 2021-6-25 / / Meeting with John Doe / / Bring the papers. ;;`
 
 ## `mep`
 
@@ -77,7 +79,7 @@ These are contents of a markdown file named `test.md`:
 
 ## Meetings
 
-Yet another meeting with John Doe.
+Yet another meeting with John Doe. See that because I didn't include any type specifier, the parser set it to event.
 ;; 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;
 ```
 

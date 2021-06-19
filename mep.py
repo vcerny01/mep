@@ -19,6 +19,7 @@ event = {
     2: "",  # name
     3: "",  # place
     4: "",  # additional info
+    5: "e",  # type
 }
 
 event_time = {0: 0, 1: 0, 2: 0}  # year  # month  # day
@@ -28,6 +29,8 @@ date_time = {
     1: datetime.datetime.today().month,  # month
     2: datetime.datetime.today().day,  # day
 }
+
+event_type = {"e": "event", "d": "deadline", "r": "reminder"}
 
 date_date = datetime.datetime.today()
 week_number = int(date_date.strftime("%V"))
@@ -119,7 +122,11 @@ def print_output(certain_event):
         day_used = True
 
     print(
-        "event:", certain_event[2], "(" + certain_event[3] + ")", "at", certain_event[1]
+        event_type[event[5]] + ":",
+        certain_event[2],
+        "(" + certain_event[3] + ")",
+        "at",
+        certain_event[1],
     )
     print("\t" + certain_event[4])
     last_day = day
@@ -229,23 +236,41 @@ def main():
         if ch == ";" and fp.read(1) == ";":
             # Initialize some variables now
             data = ""
+            type_read = False
             event_attr = 0
             # read event parameters till the event end
+
             while True:
                 # cuch stands for current char as ch is already taken in this scop
                 cuch = fp.read(1)
                 pos = fp.tell()
                 tch = fp.read(1)
+
                 if cuch == "":
                     break
+                if type_read is False and tch == "%":
+                    tstring = tch
+                    while len(tstring) < 4:
+                        tchar = fp.read(1)
+                        tstring += tchar
+                    if tstring[2] != "%" or tstring[1] not in ("e", "d", "r"):
+                        data += tstring
+                    else:
+                        type_read = True
+                        event[5] = tstring[1]
+                        pos = fp.tell()
+
                 if cuch == ";" and tch == ";":
                     event[event_attr] = data.strip()
                     time_to_dic(event[0], event_time)
                     print_permit = decide_print(timespan)
                     if print_permit:
                         print_output(event)
+                    event[5] = "e"
                     break
+
                 fp.seek(pos)
+
                 if cuch == "/":
                     if event_attr > 4:
                         break
@@ -253,6 +278,7 @@ def main():
                     data = ""
                     cuch = ""
                     event_attr += 1
+
                 data += cuch
 
 
