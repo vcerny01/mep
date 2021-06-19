@@ -65,7 +65,7 @@ Just test it out with a few events.
 
 example:
 
-These are contents a markdown file named `test.md`:
+These are contents of a markdown file named `test.md`:
 
 ```markdown
 # Events
