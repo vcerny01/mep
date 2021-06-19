@@ -26,8 +26,6 @@ Whitespace is significant both between event parameters and outside the event ex
 ;;
 ```
 
-;; 2021-6-25 / 12:00 /
-
 ### Parameters:
 
 1. Date (required) - a date must be in `YYYY-MM-DD` format
