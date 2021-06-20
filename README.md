@@ -25,9 +25,9 @@ Whitespace is significant both between event parameters and outside the event ex
 ```markdown
 ;; %e%
 2021-6-25 / 12:00 /
-    Meeting with John Doe /
-    3 Abbey Road /
-    Bring the papers. Don't forget to call John beforehand.
+Meeting with John Doe /
+3 Abbey Road /
+Bring the papers. Don't forget to call John beforehand.
 
 ;;
 ```
@@ -107,7 +107,7 @@ event: Meeting with John Doe (3 Abbey Road) at 12:00
 
 ## Export
 
-`mep` can export to JSON. Just add `export` to the end, e.g., `mep event.md week +1 export` exports everything in the next week to JSON.
+`mep` can export to JSON. Just add `export`, e.g., `mep event.md week +1 export` exports everything in the next week to JSON.
 
 This is how an event exported to JSON looks:
 
