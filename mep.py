@@ -11,6 +11,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import datetime
+import json
 from dateutil.relativedelta import relativedelta
 
 event = {
@@ -34,6 +35,9 @@ event_type = {"e": "event", "d": "deadline", "r": "reminder"}
 
 # pylint: disable=invalid-name
 approved_type = "all"
+export_to_json = False
+event_id = 0  # only used for json export
+
 date_date = datetime.datetime.today()
 week_number = int(date_date.strftime("%V"))
 
@@ -59,6 +63,13 @@ def print_help():
     print("\t\tevents - only events")
     print("\t\tdeadlines - only deadlines")
     print("\t\treminders - only reminders")
+    print(
+        "\texport - just add 'export' to the end and the output is going to be exported to JSON"
+    )
+    print(
+        "\t\texample: mep events.md all deadlines export - will export all deadlines from the file"
+    )
+
     print(
         "example:\n\tmep events.md week +1 deadlines (shows all deadlines for the next week)\n"
     )
@@ -221,7 +232,23 @@ def set_approved_type(string):
         sys.exit()
 
 
-# pylint: disable=too-many-statements,too-many-branches, invalid-name
+def json_exporter(jsonfp, certain_event: dict):
+    "export event to json"
+    global event_id
+    to_export_event = {
+        "id": event_id,
+        "type": event_type[certain_event[5]],
+        "name": event[2],
+        "date": certain_event[0],
+        "time": certain_event[1],
+        "place": certain_event[3],
+        "additional information": certain_event[4],
+    }
+    json.dump(to_export_event, jsonfp, indent=4, ensure_ascii=False)
+    event_id += 1
+
+
+# pylint: disable=too-many-statements,too-many-branches, invalid-name, too-many-locals
 def main():
     """ Main function, where it all gets done, used to from C, more tidy imo """
     # Read command-line args
@@ -246,11 +273,31 @@ def main():
         timespan = "all"
         if ch != "y":
             sys.exit()
+    ## set approved type
+    for arg in sys.argv[1:]:
+        if arg in ("events", "reminders", "deadlines"):
+            set_approved_type(arg)
+    ## set if output is to be exported
+    for arg in sys.argv[1:]:
+        global export_to_json
+        if arg == "export":
+            export_to_json = True
+    ### create filename for the json file
+    if export_to_json is True:
+        filename_export = ""
+        for char in filename:
+            if char == ".":
+                break
+            filename_export += char
+        filename_export += ".json"
     try:
-        set_approved_type(sys.argv[4])
-    except IndexError:
-        if sys.argv[3][0] not in ("+", "-", "0"):
-            set_approved_type(sys.argv[3])
+        # pylint: disable=consider-using-with
+        jsonfp = open(filename_export, "x", encoding="utf8")
+        print("\nFollowing output will be exported to JSON!")
+    except FileExistsError:
+        print("File", "'" + filename_export + "'", "already exists!")
+        sys.exit()
+
     # Open the file
     # pylint: disable=consider-using-with
     try:
@@ -259,6 +306,7 @@ def main():
         print("File does not exist!")
         sys.exit()
     # Read and print output
+    # pylint: disable=too-many-nested-blocks
     while True:
         ch = fp.read(1)
         if ch == "":
@@ -296,6 +344,8 @@ def main():
                     time_to_dic(event[0], event_time)
                     print_permit = decide_print(timespan)
                     if print_permit:
+                        if export_to_json:
+                            json_exporter(jsonfp, event)
                         print_output(event)
                     event[5] = "e"
                     break

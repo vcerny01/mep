@@ -69,6 +69,8 @@ Usage: mep [FILE] [TIMESPAN] [TYPE]
                 events - only events
                 deadlines - only deadlines
                 reminders - only reminders
+        export - just add 'export' to the end and the output is going to be exported to JSON
+                example: mep events.md all deadlines export - will export all deadlines from the file
 example:
         mep events.md week +1 deadlines (shows all deadlines for the next week)
 
@@ -105,7 +107,21 @@ event: Meeting with John Doe (3 Abbey Road) at 12:00
 
 ## Export
 
-TO DO
+`mep` can export to JSON. Just add `export` to the end, e.g., `mep event.md week +1 export` exports everything in the next week to JSON.
+
+This is how an event exported to JSON looks:
+
+```json
+{
+  "id": 0,
+  "type": "event",
+  "name": "My Event",
+  "date": "2021-6-20",
+  "time": "9:00",
+  "place": "Some Place",
+  "additional information": "Some additional information"
+}
+```
 
 ## Installation
 
