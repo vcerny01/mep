@@ -32,6 +32,8 @@ date_time = {
 
 event_type = {"e": "event", "d": "deadline", "r": "reminder"}
 
+# pylint: disable=invalid-name
+approved_type = "all"
 date_date = datetime.datetime.today()
 week_number = int(date_date.strftime("%V"))
 
@@ -42,16 +44,24 @@ last_day = " "
 
 def print_help():
     """prints help"""
-    print("Usage: mep [FILE] [TIMESPAN]")
+    print("Usage: mep [FILE] [TIMESPAN] [TYPE]")
     print("\tEnter 'mep help' to print this menu")
     print("\t[FILE] - path to a file")
-    print("\t[TIMESPAN] - options: ")
-    print("\t\tall - all events")
-    print("\t\tday [+-NUMBER] (optional) - all events for a day")
-    print("\t\tweek [+-NUMBER] (optional) - all events for a week")
-    print("\t\tmonth [+-NUMBER] (optional) - all events for a month")
-    print("\t\tyear [+-NUMBER] (optional) - all events for a year")
-    print("\t\tdate [YYYY-MM-DD] - all events for a day, input by date")
+    print("\t[TIMESPAN] (optional, defaults to all) - options: ")
+    print("\t\tall")
+    print("\t\tday [+-NUMBER] (optional, defaults to 0) - everything for a day")
+    print("\t\tweek [+-NUMBER] (optional, defaults to 0) - everything for a week")
+    print("\t\tmonth [+-NUMBER] (optional, defaults to 0) - everything for a month")
+    print("\t\tyear [+-NUMBER] (optional, default to 0) - everything for a year")
+    print("\t\tdate [YYYY-MM-DD] - everything for a day, input by date")
+    print("\t[TYPE] (optional, defaults to all) - options")
+    print("\t\tall - all types")
+    print("\t\tevents - only events")
+    print("\t\tdeadlines - only deadlines")
+    print("\t\treminders - only reminders")
+    print(
+        "example:\n\tmep events.md week +1 deadlines (shows all deadlines for the next week)\n"
+    )
 
 
 def time_to_dic(full_date, output: dict):
@@ -80,6 +90,8 @@ def time_to_dic(full_date, output: dict):
 def decide_print(timespan):
     """decides whether a currently parsed event should be printed according to timespan"""
     print_permit = False
+    if approved_type not in ("all", event[5]):
+        return print_permit
     if timespan == "all":
         print_permit = True
     if timespan in ("date", "day"):
@@ -195,6 +207,20 @@ def parse_timespan():
     sys.exit()
 
 
+def set_approved_type(string):
+    """Sets approved type"""
+    global approved_type
+    if string == "events":
+        approved_type = "e"
+    elif string == "deadlines":
+        approved_type = "d"
+    elif string == "reminders":
+        approved_type = "r"
+    else:
+        print("Unrecognized type!")
+        sys.exit()
+
+
 # pylint: disable=too-many-statements,too-many-branches, invalid-name
 def main():
     """ Main function, where it all gets done, used to from C, more tidy imo """
@@ -220,6 +246,11 @@ def main():
         timespan = "all"
         if ch != "y":
             sys.exit()
+    try:
+        set_approved_type(sys.argv[4])
+    except IndexError:
+        if sys.argv[3][0] not in ("+", "-", "0"):
+            set_approved_type(sys.argv[3])
     # Open the file
     # pylint: disable=consider-using-with
     try:

@@ -49,26 +49,34 @@ You can write `;; %e% 2021-6-25 / 12:00 / Meeting with John Doe ;;` and omit oth
 
 example:
 
-`mep file.md week +1` - prints all events in the next week.
+`mep file.md month +1 deadlines` - prints all deadlines in the next month.
 
 From `mep`'s `help`:
 
 ```text
-Usage: mep [FILE] [TIMESPAN]
+Usage: mep [FILE] [TIMESPAN] [TYPE]
         Enter 'mep help' to print this menu
         [FILE] - path to a file
-        [TIMESPAN] - options:
-                all - all events
-                day [+-NUMBER] (optional) - all events for a day
-                week [+-NUMBER] (optional) - all events for a week
-                month [+-NUMBER] (optional) - all events for a month
-                year [+-NUMBER] (optional) - all events for a year
-                date [YYYY-MM-DD] - all events for a certain day, input by date
+        [TIMESPAN] (optional, defaults to all) - options:
+                all
+                day [+-NUMBER] (optional, defaults to 0) - everything for a day
+                week [+-NUMBER] (optional, defaults to 0) - everything for a week
+                month [+-NUMBER] (optional, defaults to 0) - everything for a month
+                year [+-NUMBER] (optional, default to 0) - everything for a year
+                date [YYYY-MM-DD] - everything for a day, input by date
+        [TYPE] (optional, defaults to all) - options
+                all - all types
+                events - only events
+                deadlines - only deadlines
+                reminders - only reminders
+example:
+        mep events.md week +1 deadlines (shows all deadlines for the next week)
+
 ```
 
 `[+-NUMBER]` is a shift relative to current day/week/month/year, can be both positive and relative. Doesn't need to be specified, defaults to 0. (current day/week/month/year)
 
-Just test it out with a few events.
+Just test it out.
 
 example:
 
