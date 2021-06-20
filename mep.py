@@ -283,20 +283,20 @@ def main():
         if arg == "export":
             export_to_json = True
     ### create filename for the json file
-    if export_to_json is True:
+    if export_to_json:
         filename_export = ""
         for char in filename:
             if char == ".":
                 break
             filename_export += char
         filename_export += ".json"
-    try:
-        # pylint: disable=consider-using-with
-        jsonfp = open(filename_export, "x", encoding="utf8")
-        print("\nFollowing output will be exported to JSON!")
-    except FileExistsError:
-        print("File", "'" + filename_export + "'", "already exists!")
-        sys.exit()
+        try:
+            # pylint: disable=consider-using-with
+            jsonfp = open(filename_export, "x", encoding="utf8")
+            print("\nFollowing output will be exported to JSON!")
+        except FileExistsError:
+            print("File", "'" + filename_export + "'", "already exists!")
+            sys.exit()
 
     # Open the file
     # pylint: disable=consider-using-with
