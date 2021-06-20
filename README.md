@@ -16,16 +16,16 @@ example:
 
 `;; %e% 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;`
 
-Every event starts and ends with two semicolons (`;;`). Event parameters are separated by a slash (`/`).
+Every "event expression" starts and ends with two semicolons (`;;`). Parameters are separated by a slash (`/`).
 
 Events can be inserted anywhere in a text file
 
-Whitespace is significant both between event parameters and outside the event expression. For example, you can write:
+Whitespace is insignificant both between event parameters and outside the expression. For example, you can write:
 
 ```markdown
 ;; %e%
-2021-6-25 / 12:00 /
-Meeting with John Doe /
+  2021-6-25 / 12:00 /
+  Meeting with John Doe /
 3 Abbey Road /
 Bring the papers. Don't forget to call John beforehand.
 
@@ -34,7 +34,7 @@ Bring the papers. Don't forget to call John beforehand.
 
 ### Parameters:
 
-0. Type (optional) - a type specifier, currently supported are `e` for events, `r` for reminders, `d` for deadlines. Put it anywhere inside the expression (I recommend to put it at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
+0. Type (optional) - a type specifier, currently supported types are `e` for events, `r` for reminders, `d` for deadlines. Put it anywhere inside the expression (I recommend to put it at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
 1. Date (required) - a date must be in `YYYY-MM-DD` format
 2. Time (optional) - a time in a day, e.g., `16:30`, no special format required as it doesn't affect sorting, in fact, you can write whatever you want, e.g., `4 p.m.` or `12:00 - 16:00`, still I'd recommend to be consistent
 3. Event name (well, optional, but don't be weird) - name of the event, no special format required
@@ -45,7 +45,7 @@ You can write `;; %e% 2021-6-25 / 12:00 / Meeting with John Doe ;;` and omit oth
 
 ## `mep`
 
-`mep` is a small command-line program. It parses and displays events based on user requirements.
+`mep` is a small command-line program. It parses and displays (exports) events based on user requirements.
 
 example:
 
@@ -76,7 +76,7 @@ example:
 
 ```
 
-`[+-NUMBER]` is a shift relative to current day/week/month/year, can be both positive and relative. Doesn't need to be specified, defaults to 0. (current day/week/month/year)
+`[+-NUMBER]` is a shift relative to the current day/week/month/year, it can be both positive and negative. Doesn't need to be specified, defaults to 0.
 
 Just test it out.
 
