@@ -2,7 +2,7 @@
 # Name: mep
 # Author: Vít Černý
 # License: GPL v3
-# Description: mep parses and filters particular 'event expressions' from a markdown file
+# Description: mep parses and filters particular 'event expressions' from a markdown (text) file
 #
 # -*- coding: utf-8 -*-
 import sys
