@@ -35,9 +35,9 @@ Bring the papers. Don't forget to call John beforehand.
 ### Parameters:
 
 0. Type (optional) - a type specifier, currently supported types are `e` for events, `r` for reminders, `d` for deadlines. Put it anywhere inside the expression (I recommend to put it at the beginning) in format `%[TYPE]%`. Defaults to `e` for events
-1. Date (required) - a date must be in `YYYY-MM-DD` format
-2. Time (optional) - a time in a day, e.g., `16:30`, no special format required as it doesn't affect sorting, in fact, you can write whatever you want, e.g., `4 p.m.` or `12:00 - 16:00`, still I'd recommend to be consistent
-3. Event name (well, optional, but don't be weird) - name of the event, no special format required
+1. Date (required) - the date must be in ISO format
+2. Time (optional) - time of day, e.g., `16:30`, no special format required as it doesn't affect sorting, in fact, you can write whatever you want, e.g., `4 p.m.` or `12:00 - 16:00`, still I'd recommend to be consistent
+3. Event name (well, optional) - name of the event, no special format required
 4. Place (optional) - a place that has something to do with your event, no special format required
 5. Additional information (optional) - Some additional information for the event, e.g., a short note or a link to an online meeting
 
@@ -93,7 +93,7 @@ Yet another meeting with John Doe. See that because I didn't include any type sp
 ;; 2021-6-25 / 12:00 / Meeting with John Doe / 3 Abbey Road / Bring the papers ;;
 ```
 
-This is a command I used to get this event:
+This is the command I used to get this event:
 
 `mep test.md date 2021-6-25`
 
