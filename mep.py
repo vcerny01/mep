@@ -1,12 +1,8 @@
-# TO DO
-## - test heavily
-## - write a README and a test file
-## - create an export option, something that would export the events to JSON or iCal eventually
 #
-# Name: mep - markdown events with python
+# Name: mep
 # Author: Vít Černý
 # License: GPL v3
-# Description: mep parses and filters particular 'event entries' from a markdown file
+# Description: mep parses and filters particular 'event expressions' from a markdown file
 #
 # -*- coding: utf-8 -*-
 import sys
