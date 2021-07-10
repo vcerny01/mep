@@ -13,12 +13,12 @@ import argparse
 import datetime
 
 default_event = {
-    "date": datetime.datetime.today(),
+    "date": datetime.datetime.today().strftime('%Y-%m-%d'),
     "time": "12:00",
     "name": "New Event",
     "place": "",
     "info": "",
-    "kind": "e"
+    "kind": "event"
 }
 event = {
     "date": "",  # date
@@ -54,7 +54,6 @@ def main():
     # populate the dict with values from argv
     args = parse_args()
     for arg in vars(args).items():
-        print(arg)
         if arg[1] is not None:
             event[arg[0]] = arg[1]
 
@@ -67,35 +66,36 @@ def main():
         filename = args.file
     for var in event.items():
         var = list([var[0], var[1]])
-        print(var)
         if var[1] == "":
-            var[1] = (input(var[0] +  ": "))
+            print(var[0], "(default:", default_event[var[0]], ")",  ": ", end="")
+            var[1] = input()
             if var[1] == "":
                 var[1] = default_event[var[0]]
             event[var[0]] = var[1]
-
     # write event to the file
     try:
         fp = open(filename, "a+")
     except FileNotFoundError:
         print("File", "'" + filename + "'", "does not exist!")
         sys.exit()
-    # prepare variable
+    # prepare variables
     if event["kind"] not in ("event", "reminder", "deadline", "e", "d", "r"):
         print("Invalid expression type!!")
-        print("Exiting...")
         sys.exit()
+
+        ## TO DO CHECK FOR IF TIME IS ISO - IMPORTANT
+
     if event["kind"] in ("event", "reminder", "deadline"):
         event["kind"] = char_types[event["kind"]]
-        print(event["kind"])
+
+    print("Tests passed, writing...")
     # switch standard output and start printing
     sys.stdout = fp
-
     print(";;", "%" + event["kind"] + "%", event["date"], "/", event["time"], "/", event["name"], "/", event["place"], "/", event["info"], ";;")
 
     # switch back to the standard standard output :-))
     sys.stdout = sys.__stdout__
-
-
+    print("Your event has succesfully been written: ")
+    print(";;", "%" + event["kind"] + "%", event["date"], "/", event["time"], "/", event["name"], "/", event["place"], "/", event["info"], ";;")
 if __name__ == "__main__":
     main()
