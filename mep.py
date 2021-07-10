@@ -2,7 +2,7 @@
 # Name: mep
 # Author: Vít Černý
 # License: GPL v3
-# Description: mep parses and filters particular 'event expressions' from a markdown (text) file
+# Description: mep parses, filters and exports particular 'event expressions' from a markdown (text) file
 #
 # -*- coding: utf-8 -*-
 import sys
@@ -27,7 +27,7 @@ date_time = {
     2: datetime.datetime.today().day,  # day
 }
 
-event_type = {"e": "event", "d": "deadline", "r": "reminder"}
+event_types = {"e": "event", "d": "deadline", "r": "reminder"}
 
 # pylint: disable=invalid-name
 approved_type = "all"
@@ -54,11 +54,11 @@ def print_help():
     print("\t\tmonth [+-NUMBER] (optional, defaults to 0) - everything for a month")
     print("\t\tyear [+-NUMBER] (optional, default to 0) - everything for a year")
     print("\t\tdate [YYYY-MM-DD] - everything for a day, input by date")
-    print("\t[TYPE] (optional, defaults to all) - options")
+    print("\t[TYPE] (optional, defaults to all) - options:")
     print("\t\tall - all types")
-    print("\t\tevents - only events")
-    print("\t\tdeadlines - only deadlines")
-    print("\t\treminders - only reminders")
+    print("\t\tevent - only events")
+    print("\t\tdeadline - only deadlines")
+    print("\t\treminder - only reminders")
     print(
         "\texport - just add 'export' to the end and the output is going to be exported to JSON"
     )
@@ -141,7 +141,7 @@ def print_output(certain_event):
         day_used = True
 
     print(
-        event_type[event[5]] + ":",
+        event_types[event[5]] + ":",
         certain_event[2],
         "(" + certain_event[3] + ")",
         "at",
@@ -214,8 +214,16 @@ def parse_timespan():
     sys.exit()
 
 
-def set_approved_type(string):
+def set_approved_type(string, type_dict: dict):
     """Sets approved type"""
+    try:
+        pos = list(type_dict.values()).index(string)
+        atype = list(type_dict.keys())[pos]
+        return atype
+    except ValueError:
+        print("Invalid type! (hint: use singular, e.g. event instead of events)")
+        sys.exit()
+    """
     global approved_type
     if string == "events":
         approved_type = "e"
@@ -226,14 +234,14 @@ def set_approved_type(string):
     else:
         print("Unrecognized type!")
         sys.exit()
-
+"""
 
 def json_exporter(jsonfp, certain_event: dict):
     "export event to json"
     global event_id
     to_export_event = {
         "id": event_id,
-        "type": event_type[certain_event[5]],
+        "type": event_types[certain_event[5]],
         "name": event[2],
         "date": certain_event[0],
         "time": certain_event[1],
@@ -271,8 +279,9 @@ def main():
             sys.exit()
     ## set approved type
     for arg in sys.argv[1:]:
-        if arg in ("events", "reminders", "deadlines"):
-            set_approved_type(arg)
+        if arg in ("event", "reminder", "deadline"):
+            global approved_type
+            approved_type = set_approved_type(arg, event_types)
     ## set if output is to be exported
     for arg in sys.argv[1:]:
         global export_to_json
@@ -287,7 +296,6 @@ def main():
             filename_export += char
         filename_export += ".json"
         try:
-            # pylint: disable=consider-using-with
             jsonfp = open(filename_export, "x", encoding="utf8")
             print("\nFollowing output will be exported to JSON!")
         except FileExistsError:
@@ -295,11 +303,10 @@ def main():
             sys.exit()
 
     # Open the file
-    # pylint: disable=consider-using-with
     try:
         fp = open(filename, "r")
     except FileNotFoundError:
-        print("File does not exist!")
+        print("File", "'" + filename + "'", "does not exist!")
         sys.exit()
     # Read and print output
     # pylint: disable=too-many-nested-blocks

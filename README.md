@@ -64,11 +64,11 @@ Usage: mep [FILE] [TIMESPAN] [TYPE]
                 month [+-NUMBER] (optional, defaults to 0) - everything for a month
                 year [+-NUMBER] (optional, default to 0) - everything for a year
                 date [YYYY-MM-DD] - everything for a day, input by date
-        [TYPE] (optional, defaults to all) - options
+        [TYPE] (optional, defaults to all) - options:
                 all - all types
-                events - only events
-                deadlines - only deadlines
-                reminders - only reminders
+                event - only events
+                deadline - only deadlines
+                reminder - only reminders
         export - just add 'export' to the end and the output is going to be exported to JSON
                 example: mep events.md all deadlines export - will export all deadlines from the file
 example:
