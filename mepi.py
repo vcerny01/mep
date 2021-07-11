@@ -12,7 +12,6 @@ import sys
 import argparse
 import datetime
 
-
 #
 # SET YOUR DEFAULTS HERE:
 #
@@ -57,6 +56,20 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def validate_iso_time(timestr):
+    """Checks if string is in YYYY-MM-DD format"""
+    i = 0
+    for char in timestr.strip():
+        i += 1
+        try:
+            int(char)
+        except ValueError:
+            if i == 5 or i == 8:
+                if char == "-":
+                    continue
+            return False
+    return True
+
 
 def main():
     """ Main function """
@@ -92,7 +105,9 @@ def main():
         print("Invalid expression type!!")
         sys.exit()
 
-        ## TO DO CHECK FOR IF TIME IS ISO - IMPORTANT
+    if validate_iso_time(event["date"]) is False:
+        print("Invalid time format!! (hint: YYYY-MM-DD)")
+        sys.exit()
 
     if event["kind"] in ("event", "reminder", "deadline"):
         event["kind"] = char_types[event["kind"]]

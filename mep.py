@@ -94,7 +94,7 @@ def time_to_dic(full_date, output: dict):
         try:
             output[indexer] += int(ch)
         except ValueError:
-            print("\nInvalid time in expression named '" + event[3] + "'!!!", "\n(hint: use ISO time - YYYY-MM-DD)")
+            print("\nInvalid date in expression named '" + event[2] + "'!!!", "\n(hint: YYYY-MM-DD)")
             print("Exiting...")
             sys.exit()
 
@@ -134,7 +134,12 @@ def print_event(the_event):
     global day_used, last_day
 
     # decide whether to print the day
-    day = datetime.datetime(event_time[0], event_time[1], event_time[2])
+    try:
+        day = datetime.datetime(event_time[0], event_time[1], event_time[2])
+    except ValueError:
+        print("\nInvalid date in expression named '" + event[2] + "'!!!", "\n(hint: YYYY-MM-DD)")
+        sys.exit()
+
     if day != last_day:
         day_used = False
     if day_used is False:
