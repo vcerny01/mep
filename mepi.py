@@ -12,14 +12,23 @@ import sys
 import argparse
 import datetime
 
+
+#
+# SET YOUR DEFAULTS HERE:
+#
 default_event = {
     "date": datetime.datetime.today().strftime('%Y-%m-%d'),
-    "time": "12:00",
+    "time": "",
     "name": "New Event",
     "place": "",
     "info": "",
     "kind": "event"
 }
+
+#
+#
+#
+
 event = {
     "date": "",  # date
     "time": "",  # time
@@ -67,7 +76,7 @@ def main():
     for var in event.items():
         var = list([var[0], var[1]])
         if var[1] == "":
-            print(var[0], "(default:", default_event[var[0]], ")",  ": ", end="")
+            print(var[0], "(default:", str(default_event[var[0]]) + "): ", end="")
             var[1] = input()
             if var[1] == "":
                 var[1] = default_event[var[0]]
@@ -97,5 +106,7 @@ def main():
     sys.stdout = sys.__stdout__
     print("Your event has succesfully been written: ")
     print(";;", "%" + event["kind"] + "%", event["date"], "/", event["time"], "/", event["name"], "/", event["place"], "/", event["info"], ";;")
+
+
 if __name__ == "__main__":
     main()

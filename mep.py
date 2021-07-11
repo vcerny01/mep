@@ -91,7 +91,12 @@ def time_to_dic(full_date, output: dict):
             except ValueError:
                 break
         output[indexer] *= 10
-        output[indexer] += int(ch)
+        try:
+            output[indexer] += int(ch)
+        except ValueError:
+            print("\nInvalid time in expression named '" + event[3] + "'!!!", "\n(hint: use ISO time - YYYY-MM-DD)")
+            print("Exiting...")
+            sys.exit()
 
 
 def decide_print(timespan):
@@ -124,10 +129,11 @@ def decide_print(timespan):
 
 # I don't wanna pollute main, so I'm using global variables, it's also more tidy imo
 # pylint: disable=global-statement, invalid-name
-def print_output(certain_event):
+def print_event(the_event):
     """prints output as requiered by user"""
     global day_used, last_day
 
+    # decide whether to print the day
     day = datetime.datetime(event_time[0], event_time[1], event_time[2])
     if day != last_day:
         day_used = False
@@ -139,15 +145,15 @@ def print_output(certain_event):
             + ":",
         )
         day_used = True
+    print(event_types[event[5]] + ":", the_event[2], end="")
+    if the_event[3] != "":
+        print(" (" + the_event[3] + ")", end="")
+    if event[1] != "":
+        print("\n\t" + the_event[1],)
+    else:
+        print("\n\tall day")
 
-    print(
-        event_types[event[5]] + ":",
-        certain_event[2],
-        "(" + certain_event[3] + ")",
-        "at",
-        certain_event[1],
-    )
-    print("\t" + certain_event[4])
+    print("\t" + the_event[4])
     last_day = day
 
 
@@ -223,30 +229,18 @@ def set_approved_type(string, type_dict: dict):
     except ValueError:
         print("Invalid type! (hint: use singular, e.g. event instead of events)")
         sys.exit()
-    """
-    global approved_type
-    if string == "events":
-        approved_type = "e"
-    elif string == "deadlines":
-        approved_type = "d"
-    elif string == "reminders":
-        approved_type = "r"
-    else:
-        print("Unrecognized type!")
-        sys.exit()
-"""
 
-def json_exporter(jsonfp, certain_event: dict):
+def json_exporter(jsonfp, the_event: dict):
     "export event to json"
     global event_id
     to_export_event = {
         "id": event_id,
-        "type": event_types[certain_event[5]],
+        "type": event_types[the_event[5]],
         "name": event[2],
-        "date": certain_event[0],
-        "time": certain_event[1],
-        "place": certain_event[3],
-        "additional information": certain_event[4],
+        "date": the_event[0],
+        "time": the_event[1],
+        "place": the_event[3],
+        "additional information": the_event[4],
     }
     json.dump(to_export_event, jsonfp, indent=4, ensure_ascii=False)
     event_id += 1
@@ -349,7 +343,7 @@ def main():
                     if print_permit:
                         if export_to_json:
                             json_exporter(jsonfp, event)
-                        print_output(event)
+                        print_event(event)
                     event[5] = "e"
                     break
 
