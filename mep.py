@@ -311,6 +311,7 @@ def main():
     # pylint: disable=too-many-nested-blocks
     while True:
         ch = fp.read(1)
+        # this means we reached the end of the file
         if ch == "":
             break
         # read event entry and output to event dict
@@ -328,6 +329,7 @@ def main():
                 tch = fp.read(1)
 
                 if cuch == "":
+                    print("\nMalformed", event_types[event[5]], "named '" + event[2] + "'", "present in file '" + filename + "'!")
                     break
                 if type_read is False and tch == "%":
                     tstring = tch
@@ -356,6 +358,7 @@ def main():
 
                 if cuch == "/":
                     if event_attr > 4:
+                        print("\nMalformed", event_types[event[5]], "named '" + event[2] + "'", "present in file '" + filename + "'!")
                         break
                     event[event_attr] = data.strip()
                     data = ""

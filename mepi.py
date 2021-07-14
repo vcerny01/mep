@@ -1,10 +1,8 @@
-# IMPORT RELEVANT FUNCTIONS FROM mep.py !!!!
-
 #
 # Name: mepi
 # Author: Vít Černý
 # License: GPL v3
-# Description: mepi offers an easy, scriptable way to add 'event expression' (see mep) to text files
+# Description: mepi offers an easy, scriptable way to add 'mep expression' (see mep) to text files
 #
 # -*- coding: utf-8 -*-
 
@@ -12,9 +10,9 @@ import sys
 import argparse
 import datetime
 
-#
+
 # SET YOUR DEFAULTS HERE:
-#
+###
 default_event = {
     "date": datetime.datetime.today().strftime('%Y-%m-%d'),
     "time": "",
@@ -23,10 +21,7 @@ default_event = {
     "info": "",
     "kind": "event"
 }
-
-#
-#
-#
+####
 
 event = {
     "date": "",  # date
@@ -45,7 +40,7 @@ char_types = {
 
 def parse_args():
     """Parse and return command line arguments using argparse"""
-    parser = argparse.ArgumentParser(description="Add event expressions to text files")
+    parser = argparse.ArgumentParser(description="Write mep expressions to text files")
     parser.add_argument("-f", "--file", type=str, help="filename")
     parser.add_argument("-k", "--kind", type=str, help="expression type", choices=["event", "e", "deadline", "d", "reminder", "r"])
     parser.add_argument("-d", "--date", type=str, help="date in ISO (YYYY-MM-DD) format")
@@ -119,7 +114,7 @@ def main():
 
     # switch back to the standard standard output :-))
     sys.stdout = sys.__stdout__
-    print("Your event has succesfully been written: ")
+    print("Your expression has succesfully been written: ")
     print(";;", "%" + event["kind"] + "%", event["date"], "/", event["time"], "/", event["name"], "/", event["place"], "/", event["info"], ";;")
 
 
